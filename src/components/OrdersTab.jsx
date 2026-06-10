@@ -5,22 +5,29 @@ const FILTERS = [
   { id: 'all', label: 'All' },
   { id: 'pending', label: 'Pending' },
   { id: 'in-progress', label: 'Active' },
-  { id: 'completed', label: 'Done' },
-  { id: 'cancelled', label: 'Cancelled' }
+  { id: 'cancelled', label: 'Cancelled' },
+  { id: 'archived', label: 'Archived' }
 ]
 
 export default function OrdersTab({ orders, onOpen, onNew }) {
   const [filter, setFilter] = useState('all')
 
   const counts = FILTERS.reduce((acc, f) => {
-    acc[f.id] = f.id === 'all' ? orders.length : orders.filter((o) => o.status === f.id).length
+    if (f.id === 'all') acc[f.id] = orders.filter((o) => o.status !== 'completed').length
+    else if (f.id === 'archived') acc[f.id] = orders.filter((o) => o.status === 'completed').length
+    else acc[f.id] = orders.filter((o) => o.status === f.id).length
     return acc
   }, {})
 
   const visible =
-    filter === 'all' ? orders : orders.filter((o) => o.status === filter)
+    filter === 'all'
+      ? orders.filter((o) => o.status !== 'completed')
+      : filter === 'archived'
+      ? orders.filter((o) => o.status === 'completed')
+      : orders.filter((o) => o.status === filter)
 
   const sortedByDate = [...visible].sort((a, b) => {
+    if (filter === 'archived') return b.createdAt.localeCompare(a.createdAt)
     if (!a.dueDate && !b.dueDate) return 0
     if (!a.dueDate) return 1
     if (!b.dueDate) return -1
@@ -166,11 +173,13 @@ function EmptyState({ filter, onNew }) {
     >
       <div style={{ fontSize: 52 }}>📋</div>
       <div style={{ fontSize: 16, fontWeight: 600 }}>
-        {filter === 'all' ? 'No orders yet' : `No ${filter} orders`}
+        {filter === 'all' ? 'No orders yet' : filter === 'archived' ? 'No archived orders' : `No ${filter} orders`}
       </div>
       <div style={{ fontSize: 13, textAlign: 'center', maxWidth: 200 }}>
         {filter === 'all'
           ? 'Tap the + button to create your first order'
+          : filter === 'archived'
+          ? 'Completed orders will appear here'
           : 'Change filter to see other orders'}
       </div>
       {filter === 'all' && (

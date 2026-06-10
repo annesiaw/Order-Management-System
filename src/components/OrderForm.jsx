@@ -42,8 +42,22 @@ export default function OrderForm({ order, onSubmit, onDelete, onClose }) {
         }}
       >
         <div>
-          <div style={{ fontSize: 19, fontWeight: 700 }}>
+          <div style={{ fontSize: 19, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 8 }}>
             {order ? 'Edit Order' : 'New Order'}
+            {order?.status === 'completed' && (
+              <span style={{
+                fontSize: 11,
+                fontWeight: 600,
+                color: '#a3a3a3',
+                background: 'rgba(163,163,163,0.12)',
+                border: '1px solid rgba(163,163,163,0.25)',
+                padding: '2px 8px',
+                borderRadius: 12,
+                letterSpacing: '0.04em'
+              }}>
+                Archived
+              </span>
+            )}
           </div>
           {order && (
             <div
@@ -152,6 +166,20 @@ export default function OrderForm({ order, onSubmit, onDelete, onClose }) {
             ))}
           </div>
         </Field>
+
+        {form.status === 'completed' && (
+          <div style={{
+            fontSize: 12,
+            color: '#4ade80',
+            background: 'rgba(74,222,128,0.07)',
+            border: '1px solid rgba(74,222,128,0.2)',
+            borderRadius: 8,
+            padding: '8px 12px',
+            marginTop: -8
+          }}>
+            ✓ This order will be moved to Archived
+          </div>
+        )}
 
         {/* Notes */}
         <Field label="Notes">
