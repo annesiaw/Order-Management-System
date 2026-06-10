@@ -81,6 +81,21 @@ export default function OrderCard({ order, onClick }) {
                 OVERDUE
               </span>
             )}
+            {order.status === 'completed' && (
+              <span
+                style={{
+                  fontSize: 10,
+                  fontWeight: 700,
+                  color: '#a3a3a3',
+                  background: 'rgba(163,163,163,0.1)',
+                  padding: '1px 6px',
+                  borderRadius: 4,
+                  letterSpacing: '0.05em'
+                }}
+              >
+                ARCHIVED
+              </span>
+            )}
           </div>
           <span
             style={{
