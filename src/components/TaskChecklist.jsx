@@ -146,19 +146,22 @@ export default function TaskChecklist({ tasks, onChange }) {
                   display: 'flex',
                   alignItems: 'center',
                   gap: 4,
-                  padding: '2px 6px',
+                  padding: '4px 8px',
                   borderRadius: 6,
-                  background: dateMeta ? `${dateMeta.color}18` : 'transparent',
-                  border: dateMeta ? `1px solid ${dateMeta.color}40` : '1px solid transparent',
-                  color: dateMeta ? dateMeta.color : 'var(--text-dim)',
+                  background: dateMeta ? `${dateMeta.color}18` : 'rgba(255,255,255,0.06)',
+                  border: `1px solid ${dateMeta ? `${dateMeta.color}50` : 'rgba(255,255,255,0.15)'}`,
+                  color: dateMeta ? dateMeta.color : 'var(--text-muted)',
                   fontSize: 11,
                   fontWeight: dateMeta ? 600 : 400,
                   flexShrink: 0,
-                  transition: 'all 0.15s'
+                  transition: 'all 0.15s',
+                  minWidth: 28,
+                  minHeight: 28,
+                  justifyContent: 'center'
                 }}
               >
-                <CalendarIcon size={12} />
-                {dateMeta && <span>{dateMeta.label}</span>}
+                <CalendarIcon size={14} />
+                {dateMeta && <span style={{ marginLeft: 2 }}>{dateMeta.label}</span>}
               </button>
 
               <button
