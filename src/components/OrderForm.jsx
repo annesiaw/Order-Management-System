@@ -24,6 +24,16 @@ export default function OrderForm({ order, prices = [], onSubmit, onDelete, onCl
 
   const set = (key, val) => setForm((f) => ({ ...f, [key]: val }))
 
+  const setStatus = (newStatus) =>
+    setForm((f) => ({
+      ...f,
+      status: newStatus,
+      tasks:
+        newStatus === 'completed' || newStatus === 'awaiting-payment'
+          ? f.tasks.map((t) => ({ ...t, done: true }))
+          : f.tasks
+    }))
+
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!form.client.trim()) return
@@ -178,7 +188,7 @@ export default function OrderForm({ order, prices = [], onSubmit, onDelete, onCl
               <button
                 key={s.value}
                 type="button"
-                onClick={() => set('status', s.value)}
+                onClick={() => setStatus(s.value)}
                 style={{
                   padding: '9px 8px',
                   borderRadius: 8,
@@ -197,7 +207,7 @@ export default function OrderForm({ order, prices = [], onSubmit, onDelete, onCl
             {/* Cancelled spans full width */}
             <button
               type="button"
-              onClick={() => set('status', 'cancelled')}
+              onClick={() => setStatus('cancelled')}
               style={{
                 gridColumn: '1 / -1',
                 padding: '8px',
