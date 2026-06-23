@@ -1,6 +1,7 @@
 const STATUS_META = [
   { key: 'pending', label: 'Pending', color: '#fb923c', icon: '⏳' },
   { key: 'in-progress', label: 'In Progress', color: '#60a5fa', icon: '⚡' },
+  { key: 'awaiting-payment', label: 'Awaiting Payment', color: '#f59e0b', icon: '💳' },
   { key: 'completed', label: 'Completed', color: '#4ade80', icon: '✅' },
   { key: 'cancelled', label: 'Cancelled', color: '#9ca3af', icon: '✕' }
 ]

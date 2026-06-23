@@ -1,6 +1,7 @@
 const STATUS_COLORS = {
   pending: '#fb923c',
   'in-progress': '#60a5fa',
+  'awaiting-payment': '#f59e0b',
   completed: '#4ade80',
   cancelled: '#9ca3af'
 }
@@ -8,6 +9,7 @@ const STATUS_COLORS = {
 const STATUS_LABELS = {
   pending: 'Pending',
   'in-progress': 'In Progress',
+  'awaiting-payment': 'Awaiting Payment',
   completed: 'Completed',
   cancelled: 'Cancelled'
 }
@@ -21,7 +23,8 @@ export default function OrderCard({ order, onClick }) {
     order.dueDate &&
     new Date(order.dueDate + 'T23:59:59') < new Date() &&
     order.status !== 'completed' &&
-    order.status !== 'cancelled'
+    order.status !== 'cancelled' &&
+    order.status !== 'awaiting-payment'
 
   return (
     <div

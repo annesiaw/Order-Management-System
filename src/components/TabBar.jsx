@@ -1,7 +1,8 @@
 const TABS = [
   { id: 'orders', label: 'Orders', Icon: GridIcon },
   { id: 'calendar', label: 'Calendar', Icon: CalIcon },
-  { id: 'stats', label: 'Stats', Icon: BarIcon }
+  { id: 'stats', label: 'Stats', Icon: BarIcon },
+  { id: 'prices', label: 'Prices', Icon: TagIcon }
 ]
 
 export default function TabBar({ active, onChange }) {
@@ -118,6 +119,24 @@ function BarIcon({ size, bold }) {
       <line x1="12" y1="20" x2="12" y2="4" />
       <line x1="6" y1="20" x2="6" y2="14" />
       <line x1="2" y1="20" x2="22" y2="20" />
+    </svg>
+  )
+}
+
+function TagIcon({ size, bold }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={bold ? 2.5 : 1.8}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z" />
+      <circle cx="7" cy="7" r="1.5" fill="currentColor" stroke="none" />
     </svg>
   )
 }

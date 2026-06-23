@@ -5,6 +5,7 @@ const FILTERS = [
   { id: 'all', label: 'All' },
   { id: 'pending', label: 'Pending' },
   { id: 'in-progress', label: 'Active' },
+  { id: 'awaiting-payment', label: 'Unpaid' },
   { id: 'cancelled', label: 'Cancelled' },
   { id: 'archived', label: 'Archived' }
 ]

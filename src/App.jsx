@@ -1,10 +1,12 @@
 import { useState, useCallback } from 'react'
 import useOrders from './hooks/useOrders'
 import useNotifications from './hooks/useNotifications'
+import usePrices from './hooks/usePrices'
 import TabBar from './components/TabBar'
 import OrdersTab from './components/OrdersTab'
 import CalendarTab from './components/CalendarTab'
 import StatsTab from './components/StatsTab'
+import PricesTab from './components/PricesTab'
 import BottomSheet from './components/BottomSheet'
 import OrderForm from './components/OrderForm'
 
@@ -12,6 +14,7 @@ export default function App() {
   const [tab, setTab] = useState('orders')
   const [sheet, setSheet] = useState({ open: false, order: null })
   const { orders, addOrder, updateOrder, deleteOrder } = useOrders()
+  const { prices, addPrice, updatePrice, deletePrice } = usePrices()
   const { permission, requestPermission } = useNotifications(orders)
 
   const openNew = useCallback(() => setSheet({ open: true, order: null }), [])
@@ -111,10 +114,7 @@ export default function App() {
               width: 36,
               height: 36,
               borderRadius: 10,
-              background:
-                permission === 'granted'
-                  ? 'rgba(232,197,71,0.12)'
-                  : 'rgba(255,255,255,0.06)',
+              background: permission === 'granted' ? 'rgba(232,197,71,0.12)' : 'rgba(255,255,255,0.06)',
               border: `1px solid ${permission === 'granted' ? 'var(--gold-border)' : 'rgba(255,255,255,0.08)'}`,
               display: 'flex',
               alignItems: 'center',
@@ -124,22 +124,13 @@ export default function App() {
               transition: 'all 0.2s'
             }}
           >
-            <BellIcon
-              muted={permission === 'denied'}
-              active={permission === 'granted'}
-            />
+            <BellIcon muted={permission === 'denied'} active={permission === 'granted'} />
           </button>
         )}
       </header>
 
       {/* Main content area */}
-      <main
-        style={{
-          flex: 1,
-          overflow: 'hidden',
-          position: 'relative'
-        }}
-      >
+      <main style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
         {tab === 'orders' && (
           <OrdersTab orders={orders} onOpen={openEdit} onNew={openNew} />
         )}
@@ -148,6 +139,14 @@ export default function App() {
         )}
         {tab === 'stats' && (
           <StatsTab orders={orders} />
+        )}
+        {tab === 'prices' && (
+          <PricesTab
+            prices={prices}
+            onAdd={addPrice}
+            onUpdate={updatePrice}
+            onDelete={deletePrice}
+          />
         )}
       </main>
 
@@ -159,6 +158,7 @@ export default function App() {
         <OrderForm
           key={sheet.order?.id ?? 'new'}
           order={sheet.order}
+          prices={prices}
           onSubmit={handleSubmit}
           onDelete={handleDelete}
           onClose={closeSheet}
@@ -172,21 +172,9 @@ function BellIcon({ muted, active }) {
   const color = active ? 'var(--gold)' : 'var(--text-muted)'
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-      <path
-        d="M12 2a7 7 0 0 1 7 7v4l2 3H3l2-3V9a7 7 0 0 1 7-7Z"
-        stroke={color}
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M10 19a2 2 0 0 0 4 0"
-        stroke={color}
-        strokeWidth="1.8"
-        strokeLinecap="round"
-      />
-      {muted && (
-        <line x1="3" y1="3" x2="21" y2="21" stroke="var(--error)" strokeWidth="1.8" strokeLinecap="round" />
-      )}
+      <path d="M12 2a7 7 0 0 1 7 7v4l2 3H3l2-3V9a7 7 0 0 1 7-7Z" stroke={color} strokeWidth="1.8" strokeLinejoin="round" />
+      <path d="M10 19a2 2 0 0 0 4 0" stroke={color} strokeWidth="1.8" strokeLinecap="round" />
+      {muted && <line x1="3" y1="3" x2="21" y2="21" stroke="var(--error)" strokeWidth="1.8" strokeLinecap="round" />}
     </svg>
   )
 }
@@ -194,5 +182,6 @@ function BellIcon({ muted, active }) {
 const TAB_LABELS = {
   orders: 'Orders',
   calendar: 'Calendar',
-  stats: 'Analytics'
+  stats: 'Analytics',
+  prices: 'Price List'
 }
