@@ -103,13 +103,13 @@ export default function OrdersTab({ orders, onOpen, onNew }) {
       >
         {sortedByDate.length === 0 ? (
           <EmptyState filter={filter} onNew={onNew} />
+        ) : filter === 'all' ? (
+          <AllView orders={sortedByDate} onOpen={onOpen} />
         ) : (
           sortedByDate.map((order, i) => (
             <div
               key={order.id}
-              style={{
-                animation: `slideUp 0.28s ease ${Math.min(i * 0.04, 0.3)}s both`
-              }}
+              style={{ animation: `slideUp 0.28s ease ${Math.min(i * 0.04, 0.3)}s both` }}
             >
               <OrderCard order={order} onClick={() => onOpen(order)} />
             </div>
@@ -155,6 +155,53 @@ export default function OrdersTab({ orders, onOpen, onNew }) {
         +
       </button>
     </div>
+  )
+}
+
+function AllView({ orders, onOpen }) {
+  const active = orders.filter((o) => o.status !== 'awaiting-payment')
+  const unpaid = orders.filter((o) => o.status === 'awaiting-payment')
+
+  return (
+    <>
+      {active.map((order, i) => (
+        <div key={order.id} style={{ animation: `slideUp 0.28s ease ${Math.min(i * 0.04, 0.3)}s both` }}>
+          <OrderCard order={order} onClick={() => onOpen(order)} />
+        </div>
+      ))}
+
+      {unpaid.length > 0 && (
+        <>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 10,
+              margin: '6px 0 12px',
+              animation: `slideUp 0.28s ease ${Math.min(active.length * 0.04, 0.3)}s both`
+            }}
+          >
+            <div style={{ flex: 1, height: 1, background: 'rgba(245,158,11,0.25)' }} />
+            <span style={{
+              fontSize: 11,
+              fontWeight: 700,
+              color: '#f59e0b',
+              letterSpacing: '0.07em',
+              textTransform: 'uppercase',
+              whiteSpace: 'nowrap'
+            }}>
+              💳 Awaiting Payment · {unpaid.length}
+            </span>
+            <div style={{ flex: 1, height: 1, background: 'rgba(245,158,11,0.25)' }} />
+          </div>
+          {unpaid.map((order, i) => (
+            <div key={order.id} style={{ animation: `slideUp 0.28s ease ${Math.min((active.length + i) * 0.04, 0.3)}s both` }}>
+              <OrderCard order={order} onClick={() => onOpen(order)} />
+            </div>
+          ))}
+        </>
+      )}
+    </>
   )
 }
 
