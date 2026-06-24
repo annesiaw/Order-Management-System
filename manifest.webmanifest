@@ -1,0 +1,1 @@
+{"name":"Order Studio","short_name":"OrderStudio","description":"Mobile-first order management app","start_url":"/Order-Management-System/","display":"standalone","background_color":"#1a1a2e","theme_color":"#1a1a2e","lang":"en","scope":"/Order-Management-System/","orientation":"portrait","icons":[{"src":"favicon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"}]}
